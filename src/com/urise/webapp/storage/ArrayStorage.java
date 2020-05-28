@@ -1,13 +1,17 @@
+package com.urise.webapp.storage;
+
+import com.urise.webapp.model.Resume;
+
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
-    int size;
+    private Resume[] storage = new Resume[10000];
+    private int size;
 
-    void clear() {
+    public void clear() {
         if (size == 0)
-            System.out.println("Resume is empty");
+            System.out.println("com.urise.webapp.model.Resume is empty");
         else {
             for (int i = 0; i < size; i++) {
                 storage[i] = null;
@@ -16,19 +20,19 @@ public class ArrayStorage {
         }
     }
 
-    void save(Resume r) {
+    public void save(Resume r) {
         if (size == storage.length)
-            System.out.println("Resume is full");
+            System.out.println("com.urise.webapp.model.Resume is full");
         else {
             storage[size] = r;
             size++;
         }
     }
 
-    String get(String uuid) {
+    public String get(String uuid) {
         String answer = "";
         if (size == 0)
-            answer = "Resume is empty";
+            answer = "com.urise.webapp.model.Resume is empty";
         else {
             for (int i = 0; i < size; i++) {
                 if (storage[i].getUuid().equals(uuid)) {
@@ -42,10 +46,10 @@ public class ArrayStorage {
         return answer;
     }
 
-    void delete(String uuid) {
+    public void delete(String uuid) {
         int pos;
         if (size == 0)
-            System.out.println("Resume is empty");
+            System.out.println("com.urise.webapp.model.Resume is empty");
         else {
             for (int i = 0; i < size; i++) {
                 if (storage[i].getUuid().equals(uuid)) {
@@ -62,13 +66,13 @@ public class ArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
+    public Resume[] getAll() {
         Resume[] output = new Resume[size];
         System.arraycopy(storage, 0, output, 0, size);
         return output;
     }
 
-    int size() {
+    public int size() {
         return size;
     }
 }
