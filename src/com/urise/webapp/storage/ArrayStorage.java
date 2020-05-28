@@ -1,6 +1,9 @@
 package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 /**
  * Array based storage for Resumes
@@ -10,56 +13,47 @@ public class ArrayStorage {
     private int size;
 
     public void clear() {
-        if (size == 0)
-            System.out.println("com.urise.webapp.model.Resume is empty");
-        else {
-            for (int i = 0; i < size; i++) {
-                storage[i] = null;
-            }
+        if (size == 0) {
+            System.out.println("Resume is empty");
+        } else {
+            Arrays.fill(storage, null);
             size = 0;
         }
     }
 
     public void save(Resume r) {
-        if (size == storage.length)
-            System.out.println("com.urise.webapp.model.Resume is full");
-        else {
+        if (size == storage.length) {
+            System.out.println("Resume is full");
+        } else if (check(r.getUuid()) != -1) {
+            System.out.println("Resume already exist");
+        } else {
             storage[size] = r;
             size++;
         }
     }
 
-    public String get(String uuid) {
-        String answer = "";
-        if (size == 0)
-            answer = "com.urise.webapp.model.Resume is empty";
-        else {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    answer = storage[i].getUuid();
-                    break;
-                }
-            }
+    public Resume get(String uuid) {
+        if (size == 0) {
+            System.out.println("Resume is empty");
+            return null;
+        } else if (check(uuid) == -1) {
+            System.out.println("There is no such element in Resume");
+            return null;
+        } else {
+            return storage[check(uuid)];
         }
-        if (answer == "")
-            answer = "There is no such element";
-        return answer;
     }
 
     public void delete(String uuid) {
         int pos;
-        if (size == 0)
-            System.out.println("com.urise.webapp.model.Resume is empty");
-        else {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    storage[i] = null;
-                    pos = i;
-                    System.arraycopy(storage, pos + 1, storage, pos, size - (pos + 1));
-                    size--;
-                    break;
-                }
-            }
+        if (size == 0) {
+            System.out.println("Resume is empty");
+        } else if (check(uuid) == -1) {
+            System.out.println("There is no such element in Resume");
+        } else {
+            pos = check(uuid);
+            System.arraycopy(storage, pos + 1, storage, pos, size - (pos + 1));
+            size--;
         }
     }
 
@@ -67,9 +61,26 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        Resume[] output = new Resume[size];
-        System.arraycopy(storage, 0, output, 0, size);
-        return output;
+        Resume[] resumes = new Resume[size];
+        resumes = Arrays.copyOf(storage, size);
+        return resumes;
+    }
+
+    public void update(Resume r) {
+        if (check(r.getUuid()) == -1) {
+            System.out.println("There is no such element in Resume");
+        } else {
+            storage[size] = r;
+        }
+    }
+
+    public int check(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public int size() {
