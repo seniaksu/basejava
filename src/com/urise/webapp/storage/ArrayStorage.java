@@ -1,6 +1,7 @@
 package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
+
 import java.util.Arrays;
 
 /**
@@ -11,9 +12,9 @@ public class ArrayStorage {
     private int size;
 
     public void clear() {
-            Arrays.fill(storage,0, size, null);
-            size = 0;
-        }
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
+    }
 
     public void save(Resume r) {
         if (size == storage.length) {
@@ -31,9 +32,8 @@ public class ArrayStorage {
         if (pos == -1) {
             System.out.println("There is no such " + uuid + " in Resume");
             return null;
-        } else {
-            return storage[pos];
         }
+        return storage[pos];
     }
 
     public void delete(String uuid) {
@@ -45,12 +45,12 @@ public class ArrayStorage {
             size--;
         }
     }
+
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        Resume[] resumes = new Resume[size];
-        resumes = Arrays.copyOf(storage, size);
+        Resume[] resumes = Arrays.copyOf(storage, size);
         return resumes;
     }
 
@@ -63,7 +63,7 @@ public class ArrayStorage {
         }
     }
 
-    public int check(String uuid) {
+    private int check(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
