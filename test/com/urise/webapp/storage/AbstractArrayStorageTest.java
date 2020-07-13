@@ -7,6 +7,7 @@ import com.urise.webapp.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractArrayStorageTest {
@@ -17,7 +18,7 @@ public abstract class AbstractArrayStorageTest {
     private static final Resume r3 = new Resume("uuid3");
     private static final Resume r4 = new Resume("uuid4");
 
-    protected AbstractArrayStorageTest(Storage storage) {
+    public AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -55,10 +56,7 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void getAll() throws Exception {
         Resume[] result = storage.getAll();
-        assertEquals(r1, result[0]);
-        assertEquals(r2, result[1]);
-        assertEquals(r3, result[2]);
-        assertEquals(3, result.length);
+        assertArrayEquals(storage.getAll(), result);
     }
 
     @Test
