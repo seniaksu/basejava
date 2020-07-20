@@ -32,20 +32,20 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void size() throws Exception {
-        assertEquals(3, storage.size());
+        assertSize(3);
     }
 
     @Test
     public void clear() throws Exception {
         storage.clear();
-        assertEquals(0, storage.size());
+        assertSize(0);
     }
 
     @Test
     public void update() throws Exception {
         Resume r5 = new Resume("uuid2");
         storage.update(r5);
-        assertEquals(r5, storage.get("uuid2"));
+        assertGet(r5);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -55,15 +55,16 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void getAll() throws Exception {
-        Resume[] result = storage.getAll();
-        assertArrayEquals(storage.getAll(), result);
+        Resume[] actualResumes = storage.getAll();
+        Resume[] expectedResumes = {r1, r2, r3};
+        assertArrayEquals(expectedResumes, actualResumes);
     }
 
     @Test
     public void save() throws Exception {
         storage.save(r4);
-        assertEquals(r4, storage.get("uuid4"));
-        assertEquals(4, storage.size());
+        assertGet(r4);
+        assertSize(4);
     }
 
     @Test(expected = ExistStorageException.class)
@@ -86,7 +87,7 @@ public abstract class AbstractArrayStorageTest {
     @Test(expected = NotExistStorageException.class)
     public void delete() throws Exception {
         storage.delete("uuid2");
-        assertEquals(2, storage.size());
+        assertSize(2);
         storage.get("uuid2");
     }
 
@@ -97,13 +98,22 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void get() throws Exception {
-        assertEquals(r1, storage.get("uuid1"));
-        assertEquals(r2, storage.get("uuid2"));
-        assertEquals(r3, storage.get("uuid3"));
+        assertGet(r1);
+        assertGet(r2);
+        assertGet(r3);
     }
 
     @Test(expected = NotExistStorageException.class)
     public void getNotExist() throws Exception {
         storage.get("dummy");
     }
+
+    private void assertSize(int size){
+        assertEquals(size, storage.size());
+    }
+
+    private void assertGet(Resume resume){
+        assertEquals(resume, storage.get(resume.getUuid()));
+    }
+
 }

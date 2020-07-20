@@ -11,65 +11,57 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
+
+    public int size() {
+        return size;
+    }
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return storage[index];
-    }
-
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
-    public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index < 0) {
-           throw new NotExistStorageException(resume.getUuid());
-        } else {
-            storage[index] = resume;
-        }
+    @Override
+    protected Resume getElement(int index) {
+        return storage[index];
     }
 
-    public int size() {
-        return size;
+    @Override
+    protected void updateElement(int index, Resume resume) {
+              storage[index] = resume;
     }
 
-    public void save(Resume resume) {
-        int index = getIndex(resume.getUuid());
+    @Override
+    public void saveElement(int index, Resume resume) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", resume.getUuid());
-        } else if (index >= 0) {
-            throw new ExistStorageException(resume.getUuid());
         } else {
-            saveElement(index, resume);
+            insertElement(index, resume);
             size++;
         }
     }
 
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            deleteElement(index);
+    @Override
+    public void deleteElement(int index) {
+            fillDeletedElement(index);
             size--;
-        }
     }
 
-    protected abstract void saveElement(int index, Resume resume);
-    protected abstract void deleteElement(int index);
-    protected abstract int getIndex(String uuid);
+    @Override
+    protected boolean isExist(int index) {
+        return index >= 0;
+    }
+
+    protected abstract void insertElement(int index, Resume resume);
+    protected abstract void fillDeletedElement(int index);
+    //protected abstract int getIndex(String uuid);
 }

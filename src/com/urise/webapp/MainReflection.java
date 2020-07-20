@@ -1,5 +1,6 @@
 package com.urise.webapp;
 
+import com.sun.org.apache.xpath.internal.objects.XObject;
 import com.urise.webapp.model.Resume;
 
 import java.lang.reflect.Field;
@@ -11,16 +12,17 @@ public class MainReflection {
             InvocationTargetException {
         Resume r = new Resume();
 
-        Class class_resume = r.getClass();
-        Field field = class_resume.getDeclaredFields()[0];
+        Class<? extends Resume> resumeClass = r.getClass();
+        Field field = resumeClass.getDeclaredFields()[0];
         field.setAccessible(true);
         System.out.println(field.getName());
         System.out.println(field.get(r));
         field.set(r, "new_uuid");
         System.out.println(r);
 
-        Method method_str = class_resume.getMethod("toString");
-        System.out.println(method_str.invoke(r));
+        Method method = resumeClass.getMethod("toString");
+        Object result = method.invoke(r);
+        System.out.println(result);
 
     }
 }
