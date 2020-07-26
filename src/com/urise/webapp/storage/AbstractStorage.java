@@ -9,7 +9,7 @@ import com.urise.webapp.model.Resume;
 public abstract class AbstractStorage implements Storage  {
 
     public Resume get(String uuid) {
-        int index = getIndex(uuid);
+        Object index = getIndex(uuid);
         if (!isExist(index)) {
             throw new NotExistStorageException(uuid);
         }
@@ -17,7 +17,7 @@ public abstract class AbstractStorage implements Storage  {
     }
 
     public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
+        Object index = getIndex(resume.getUuid());
         if (!isExist(index)) {
             throw new NotExistStorageException(resume.getUuid());
         } else {
@@ -26,7 +26,7 @@ public abstract class AbstractStorage implements Storage  {
     }
 
     public void save(Resume resume) {
-        int index = getIndex(resume.getUuid());
+        Object index = getIndex(resume.getUuid());
         if (isExist(index)) {
             throw new ExistStorageException(resume.getUuid());
         } else {
@@ -35,7 +35,7 @@ public abstract class AbstractStorage implements Storage  {
     }
 
     public void delete(String uuid) {
-        int index = getIndex(uuid);
+        Object index = getIndex(uuid);
         if (!isExist(index)) {
             throw new NotExistStorageException(uuid);
         } else {
@@ -43,11 +43,11 @@ public abstract class AbstractStorage implements Storage  {
         }
     }
 
-    protected abstract void saveElement(int index, Resume resume);
-    protected abstract void updateElement(int index, Resume resume);
-    protected abstract void deleteElement(int index);
-    protected abstract int getIndex(String uuid);
-    protected abstract Resume getElement (int index);
-    protected abstract boolean isExist (int index);
+    protected abstract void saveElement(Object index, Resume resume);
+    protected abstract void updateElement(Object index, Resume resume);
+    protected abstract void deleteElement(Object index);
+    protected abstract Object getIndex(String uuid);
+    protected abstract Resume getElement (Object index);
+    protected abstract boolean isExist (Object index);
 
 }

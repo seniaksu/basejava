@@ -1,7 +1,5 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exception.ExistStorageException;
-import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
@@ -31,37 +29,37 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getElement(int index) {
-        return storage[index];
+    protected Resume getElement(Object index) {
+        return storage[(Integer) index];
     }
 
     @Override
-    protected void updateElement(int index, Resume resume) {
-              storage[index] = resume;
+    protected void updateElement(Object index, Resume resume) {
+              storage[(Integer) index] = resume;
     }
 
     @Override
-    public void saveElement(int index, Resume resume) {
+    public void saveElement(Object index, Resume resume) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", resume.getUuid());
         } else {
-            insertElement(index, resume);
+            insertElement((Integer)index, resume);
             size++;
         }
     }
 
     @Override
-    public void deleteElement(int index) {
-            fillDeletedElement(index);
+    public void deleteElement(Object index) {
+            fillDeletedElement((Integer) index);
             size--;
     }
 
     @Override
-    protected boolean isExist(int index) {
-        return index >= 0;
+    protected boolean isExist(Object index) {
+        return (Integer) index >= 0;
     }
 
     protected abstract void insertElement(int index, Resume resume);
     protected abstract void fillDeletedElement(int index);
-    //protected abstract int getIndex(String uuid);
+    protected abstract Integer getIndex(String uuid);
 }
