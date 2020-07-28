@@ -5,7 +5,7 @@ import com.urise.webapp.model.Resume;
 import org.junit.Test;
 
 
-public class AbstractArrayStorageTest extends AbstractStorageTest{
+public abstract class AbstractArrayStorageTest extends AbstractStorageTest{
 
     public AbstractArrayStorageTest(Storage storage) {
         super(storage);
