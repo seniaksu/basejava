@@ -20,13 +20,13 @@ public class MainArray {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Resume r;
         while (true) {
-            System.out.print("Введите одну из команд - (list | save fullName | update uuid and fullName | delete uuid | get uuid | clear | exit): ");
+            System.out.print("Введите одну из команд - (list | size | save fullName | update uuid and fullName | delete uuid | get uuid | clear | exit): ");
             String[] params = reader.readLine().trim().toLowerCase().split(" ");
             if (params.length < 1 || params.length > 3) {
                 System.out.println("Неверная команда.");
                 continue;
             }
-            String parametr = "name";
+            String parametr = null;
             if (params.length == 1) {
                 parametr = params[1].intern();
             }
