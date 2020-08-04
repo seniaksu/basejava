@@ -5,10 +5,10 @@ import com.urise.webapp.model.Resume;
 import java.util.*;
 
 public class MainCollections {
-    private static final Resume r1 = new Resume("uuid1");
-    private static final Resume r2 = new Resume("uuid2");
-    private static final Resume r3 = new Resume("uuid3");
-    private static final Resume r4 = new Resume("uuid4");
+    private static final Resume r1 = new Resume("uuid1", "Name1");
+    private static final Resume r2 = new Resume("uuid2", "Name2");
+    private static final Resume r3 = new Resume("uuid3", "Name3");
+    private static final Resume r4 = new Resume("uuid4", "Name4");
 
     public static void main(String[] args) {
         Collection<Resume> collection = new ArrayList<>();

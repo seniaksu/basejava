@@ -6,16 +6,19 @@ import com.urise.webapp.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
     protected Storage storage;
 
-    private static final Resume r1 = new Resume("uuid1");
-    private static final Resume r2 = new Resume("uuid2");
-    private static final Resume r3 = new Resume("uuid3");
-    private static final Resume r4 = new Resume("uuid4");
+    private static final Resume r1 = new Resume("uuid1", "Name1");
+    private static final Resume r2 = new Resume("uuid2", "Name2");
+    private static final Resume r3 = new Resume("uuid3", "Name3");
+    private static final Resume r4 = new Resume("uuid4", "Name4");
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -42,7 +45,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() throws Exception {
-        Resume r5 = new Resume("uuid2");
+        Resume r5 = new Resume("uuid2" , "NewName");
         storage.update(r5);
         assertGet(r5);
     }
@@ -54,9 +57,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAll() throws Exception {
-        Resume[] actualResumes = storage.getAll();
-        Resume[] expectedResumes = {r1, r2, r3};
-        assertArrayEquals(expectedResumes, actualResumes);
+        List<Resume> actualResumes = storage.getAllSorted();
+        List<Resume> expectedResumes = Arrays.asList(r1, r2, r3);
+        assertEquals(actualResumes, expectedResumes);
     }
 
     @Test

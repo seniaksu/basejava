@@ -1,40 +1,43 @@
 package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class MapStorage extends AbstractStorage  {
+public class MapResumeStorage extends AbstractStorage  {
     Map<String, Resume> map = new HashMap<>();
 
     @Override
     protected void saveElement(Object searchKey, Resume resume) {
-        map.put((String) searchKey,resume);
+        map.put(resume.getUuid(),resume);
     }
 
     @Override
     protected void updateElement(Object searchKey, Resume resume) {
-        map.put((String) searchKey, resume);
+        map.put(resume.getUuid(), resume);
     }
 
     @Override
     protected void deleteElement(Object searchKey) {
-        map.remove((String) searchKey);
+        map.remove(((Resume) searchKey).getUuid());
     }
 
     @Override
-    protected String getSearchKey(String uuid) {
-        return uuid;
+    protected Resume getSearchKey(String uuid) {
+        return map.get(uuid);
     }
 
     @Override
     protected Resume getElement(Object searchKey) {
-        return map.get((String) searchKey);
+        return (Resume) searchKey;
     }
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return map.containsKey((String) searchKey);
+        return searchKey != null;
     }
 
     @Override
@@ -43,8 +46,8 @@ public class MapStorage extends AbstractStorage  {
     }
 
     @Override
-    public Resume[] getAll() {
-        return map.values().toArray(new Resume[map.size()]);
+    public List<Resume> getAllElement() {
+        return new ArrayList<>(map.values());
     }
 
     @Override
@@ -52,3 +55,4 @@ public class MapStorage extends AbstractStorage  {
         return map.size();
     }
 }
+
