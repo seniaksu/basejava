@@ -2,10 +2,11 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import org.junit.Assert;
 import org.junit.Test;
 
 
-public abstract class AbstractArrayStorageTest extends AbstractStorageTest{
+public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
 
     public AbstractArrayStorageTest(Storage storage) {
         super(storage);
@@ -18,7 +19,7 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest{
                 storage.save(new Resume("NewName" + i));
             }
         } catch (StorageException ex) {
-            ex.getMessage();
+            Assert.fail();
         }
         storage.save(new Resume("overFlow"));
     }

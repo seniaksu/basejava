@@ -9,7 +9,6 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
@@ -45,7 +44,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() throws Exception {
-        Resume r5 = new Resume("uuid2" , "NewName");
+        Resume r5 = new Resume("uuid2", "NewName");
         storage.update(r5);
         assertGet(r5);
     }
@@ -59,7 +58,7 @@ public abstract class AbstractStorageTest {
     public void getAll() throws Exception {
         List<Resume> actualResumes = storage.getAllSorted();
         List<Resume> expectedResumes = Arrays.asList(r1, r2, r3);
-        assertEquals(actualResumes, expectedResumes);
+        assertEquals(expectedResumes, actualResumes);
     }
 
     @Test
@@ -98,11 +97,11 @@ public abstract class AbstractStorageTest {
         storage.get("dummy");
     }
 
-    private void assertSize(int size){
+    private void assertSize(int size) {
         assertEquals(size, storage.size());
     }
 
-    private void assertGet(Resume resume){
+    private void assertGet(Resume resume) {
         assertEquals(resume, storage.get(resume.getUuid()));
     }
 
