@@ -10,7 +10,7 @@ import java.util.List;
  * Array based storage for Resumes
  */
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -27,38 +27,38 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     public List<Resume> getAllElement(){
-        return Arrays.asList(Arrays.copyOf(storage, size));
+        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
 
     @Override
-    protected Resume getElement(Object index) {
-        return storage[(Integer) index];
+    protected Resume getElement(Integer index) {
+        return storage[index];
     }
 
     @Override
-    protected void updateElement(Object index, Resume resume) {
-              storage[(Integer) index] = resume;
+    protected void updateElement(Integer index, Resume resume) {
+              storage[index] = resume;
     }
 
     @Override
-    public void saveElement(Object index, Resume resume) {
+    public void saveElement(Integer index, Resume resume) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", resume.getUuid());
         } else {
-            insertElement((Integer)index, resume);
+            insertElement(index, resume);
             size++;
         }
     }
 
     @Override
-    public void deleteElement(Object index) {
-            fillDeletedElement((Integer) index);
+    public void deleteElement(Integer index) {
+            fillDeletedElement(index);
             size--;
     }
 
     @Override
-    protected boolean isExist(Object index) {
-        return (Integer) index >= 0;
+    protected boolean isExist(Integer index) {
+        return index >= 0;
     }
 
     protected abstract void insertElement(int index, Resume resume);
