@@ -3,14 +3,14 @@ package com.urise.webapp.model;
 import java.time.YearMonth;
 import java.util.Objects;
 
-public class OrganizationInfo {
+public class Experience {
     private final String name;
     private final String title;
     private final YearMonth startDate;
     private final YearMonth endDate;
     private final String description;
 
-    public OrganizationInfo(String name, String title, YearMonth startDate, YearMonth endDate, String description) {
+    public Experience(String name, String title, YearMonth startDate, YearMonth endDate, String description) {
         Objects.requireNonNull(title, "title must not be null");
         Objects.requireNonNull(name, "name must not be null");
         Objects.requireNonNull(startDate, "startDate must not be null");
@@ -23,31 +23,31 @@ public class OrganizationInfo {
         this.description = description;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public YearMonth getStartDate() {
-        return startDate;
-    }
-
-    public YearMonth getEndDate() {
-        return endDate;
-    }
-
     public String getTitle() {
         return title;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getDescription() {
         return description;
     }
 
+    public YearMonth getEndDate() {
+        return endDate;
+    }
+
+    public YearMonth getStartDate() {
+        return startDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrganizationInfo that = (OrganizationInfo) o;
+        Experience that = (Experience) o;
         return name.equals(that.name) &&
                 title.equals(that.title) &&
                 startDate.equals(that.startDate) &&
@@ -62,12 +62,6 @@ public class OrganizationInfo {
 
     @Override
     public String toString() {
-        return "OrganizationInfo{" +
-                "name='" + name + '\'' +
-                ", title='" + title + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", description='" + description + '\'' +
-                '}';
+        return name + " " + title + " " + startDate + " " + endDate + " " + description;
     }
 }

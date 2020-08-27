@@ -1,6 +1,7 @@
 package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +19,10 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    public List<Resume> getAllElement(){
+    public List<Resume> getAllElement() {
         return new ArrayList<>(list);
     }
-    
+
     @Override
     protected void saveElement(Integer searchKey, Resume resume) {
         list.add(resume);
@@ -41,7 +42,7 @@ public class ListStorage extends AbstractStorage<Integer> {
     protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getUuid().equals(uuid)) {
-                    return i;
+                return i;
             }
         }
         return -1;

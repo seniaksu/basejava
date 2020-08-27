@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class ListSection extends Section {
+public class ListSection extends AbstractSection {
     private final List<String> content;
 
     public ListSection(List<String> content) {
@@ -35,9 +35,7 @@ public class ListSection extends Section {
 
     @Override
     public String toString() {
-        return "ListSection{" +
-                "content=" + content +
-                '}';
+        return content.toString();
     }
 
 }

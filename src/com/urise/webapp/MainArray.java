@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class MainArray {
     private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
-   //private static final SortedArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
+    //private static final SortedArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

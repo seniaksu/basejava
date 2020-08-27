@@ -37,14 +37,14 @@ public class MainCollections {
         map.put("uuid2", r2);
         map.put("uuid3", r3);
 
-        for(String uuid : map.keySet()){
+        for (String uuid : map.keySet()) {
             System.out.println(map.get(uuid));
         }
 
-        for(Map.Entry<String, Resume> entry: map.entrySet()){
+        for (Map.Entry<String, Resume> entry : map.entrySet()) {
             System.out.println(entry.getValue());
         }
-        
+
         List<Resume> resumes = Arrays.asList(r1, r2, r3);
 
         resumes.remove(1);

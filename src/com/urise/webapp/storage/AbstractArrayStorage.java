@@ -26,7 +26,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    public List<Resume> getAllElement(){
+    public List<Resume> getAllElement() {
         return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
 
@@ -37,7 +37,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     @Override
     protected void updateElement(Integer index, Resume resume) {
-              storage[index] = resume;
+        storage[index] = resume;
     }
 
     @Override
@@ -52,8 +52,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     @Override
     public void deleteElement(Integer index) {
-            fillDeletedElement(index);
-            size--;
+        fillDeletedElement(index);
+        size--;
     }
 
     @Override
@@ -62,6 +62,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     protected abstract void insertElement(int index, Resume resume);
+
     protected abstract void fillDeletedElement(int index);
-    protected abstract Integer getSearchKey (String uuid);
+
+    protected abstract Integer getSearchKey(String uuid);
 }

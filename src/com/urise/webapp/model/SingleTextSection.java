@@ -2,10 +2,10 @@ package com.urise.webapp.model;
 
 import java.util.Objects;
 
-public class Text extends Section {
+public class SingleTextSection extends AbstractSection {
     private final String content;
 
-    public Text(String content) {
+    public SingleTextSection(String content) {
         Objects.requireNonNull(content, "content must not be null");
         this.content = content;
     }
@@ -18,7 +18,7 @@ public class Text extends Section {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Text that = (Text) o;
+        SingleTextSection that = (SingleTextSection) o;
         return content.equals(that.content);
     }
 
@@ -29,8 +29,6 @@ public class Text extends Section {
 
     @Override
     public String toString() {
-        return "Text{" +
-                "content='" + content + '\'' +
-                '}';
+        return content;
     }
 }
