@@ -4,31 +4,31 @@ import java.time.YearMonth;
 import java.util.Objects;
 
 public class Experience {
-    private final String name;
+    private final Link homepage;
     private final String title;
     private final YearMonth startDate;
     private final YearMonth endDate;
     private final String description;
 
-    public Experience(String name, String title, YearMonth startDate, YearMonth endDate, String description) {
-        Objects.requireNonNull(title, "title must not be null");
+    public Experience(String name, String url, String title, YearMonth startDate, YearMonth endDate, String description) {
         Objects.requireNonNull(name, "name must not be null");
+        Objects.requireNonNull(title, "title must not be null");
         Objects.requireNonNull(startDate, "startDate must not be null");
         Objects.requireNonNull(endDate, "endDate must not be null");
         Objects.requireNonNull(description, "description must not be null");
-        this.name = name;
+        this.homepage = new Link(name, url);
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
         this.description = description;
     }
 
-    public String getTitle() {
-        return title;
+    public Link getHomepage() {
+        return homepage;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     public String getDescription() {
@@ -48,7 +48,7 @@ public class Experience {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Experience that = (Experience) o;
-        return name.equals(that.name) &&
+        return homepage.equals(that.homepage) &&
                 title.equals(that.title) &&
                 startDate.equals(that.startDate) &&
                 endDate.equals(that.endDate) &&
@@ -57,11 +57,17 @@ public class Experience {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, title, startDate, endDate, description);
+        return Objects.hash(homepage, title, startDate, endDate, description);
     }
 
     @Override
     public String toString() {
-        return name + " " + title + " " + startDate + " " + endDate + " " + description;
+        return "Experience{" +
+                "homepage=" + homepage +
+                ", title='" + title + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
