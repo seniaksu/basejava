@@ -7,6 +7,10 @@ import java.util.Objects;
 public class OrganizationSection extends AbstractSection {
     private final List<Experience> positions;
 
+    public OrganizationSection(Experience... positions) {
+        this(Arrays.asList(positions));
+    }
+
     public OrganizationSection(List<Experience> positions) {
         Objects.requireNonNull(positions, "positions must not be null");
         this.positions = positions;
@@ -14,10 +18,6 @@ public class OrganizationSection extends AbstractSection {
 
     public List<Experience> getPositions() {
         return positions;
-    }
-
-    public OrganizationSection(Experience... positions) {
-        this(Arrays.asList(positions));
     }
 
     @Override

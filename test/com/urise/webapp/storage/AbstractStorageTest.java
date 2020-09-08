@@ -10,11 +10,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static com.urise.webapp.ResumeTestData.getResume;
 
 public abstract class AbstractStorageTest {
     protected Storage storage;
 
-    private static final Resume r1 = new Resume("uuid1", "Name1");
+    private static final Resume r1 = getResume("uuid1", "Name1");
     private static final Resume r2 = new Resume("uuid2", "Name2");
     private static final Resume r3 = new Resume("uuid3", "Name3");
     private static final Resume r4 = new Resume("uuid4", "Name4");
@@ -46,7 +47,7 @@ public abstract class AbstractStorageTest {
     public void update() throws Exception {
         Resume r5 = new Resume("uuid2", "NewName");
         storage.update(r5);
-        assertGet(r5);
+        assertEquals(r5, storage.get("uuid2"));
     }
 
     @Test(expected = NotExistStorageException.class)

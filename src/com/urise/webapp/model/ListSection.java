@@ -7,13 +7,13 @@ import java.util.Objects;
 public class ListSection extends AbstractSection {
     private final List<String> content;
 
+    public ListSection(String... content) {
+        this(Arrays.asList(content));
+    }
+
     public ListSection(List<String> content) {
         Objects.requireNonNull(content, "content must not be null");
         this.content = content;
-    }
-
-    public ListSection(String... content) {
-        this(Arrays.asList(content));
     }
 
     public List<String> getContent() {
