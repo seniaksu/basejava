@@ -10,15 +10,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static com.urise.webapp.ResumeTestData.getResume;
+import static com.urise.webapp.ResumeTestData.fillResume;
 
 public abstract class AbstractStorageTest {
     protected Storage storage;
 
-    private static final Resume r1 = getResume("uuid1", "Name1");
-    private static final Resume r2 = new Resume("uuid2", "Name2");
-    private static final Resume r3 = new Resume("uuid3", "Name3");
-    private static final Resume r4 = new Resume("uuid4", "Name4");
+    private static final Resume r1 = fillResume("uuid1", "Name1");
+    private static final Resume r2 = fillResume("uuid2", "Name2");
+    private static final Resume r3 = fillResume("uuid3", "Name3");
+    private static final Resume r4 = fillResume("uuid4", "Name4");
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;

@@ -29,16 +29,17 @@ public class MainFile {
         }
     }
 
-    public static void directoryTraversal(File dir){
+    public static void directoryTraversal(File dir) {
         File[] folder = dir.listFiles();
-        for(File file : folder ) {
-            if(file.isFile()){
-                System.out.println(file);
-            } else if (file.isDirectory()) {
-                System.out.println();
-                directoryTraversal(file);
+        if (folder != null) {
+            for (File file : folder) {
+                if (file.isFile()) {
+                    System.out.println("File:" + file.getName());
+                } else if (file.isDirectory()) {
+                    System.out.println("File:" + file.getName());
+                    directoryTraversal(file);
+                }
             }
         }
-
     }
 }
