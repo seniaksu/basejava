@@ -26,18 +26,18 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        directoryTraversal(dir);
+        directoryTraversal(dir, "");
     }
 
-    public static void directoryTraversal(File dir) {
+    public static void directoryTraversal(File dir, String space) {
         File[] folder = dir.listFiles();
         if (folder != null) {
             for (File file : folder) {
                 if (file.isFile()) {
-                    System.out.println("File:" + file.getName());
+                    System.out.println(space + "File:" + file.getName());
                 } else if (file.isDirectory()) {
-                    System.out.println("File:" + file.getName());
-                    directoryTraversal(file);
+                    System.out.println("Directory:" + file.getName());
+                    directoryTraversal(file, space + "   ");
                 }
             }
         }
