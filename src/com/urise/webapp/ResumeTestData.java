@@ -2,12 +2,12 @@ package com.urise.webapp;
 
 import com.urise.webapp.model.*;
 
-import java.time.YearMonth;
+import java.time.Month;
 
 public class ResumeTestData {
+
     public static void main(String[] args) {
         Resume resume = fillResume("uuid1", "Name1");
-
         System.out.println("Uuid: " + resume.getUuid() + ", FileName: " + resume.getFullName());
         for (ContactType type : ContactType.values()) {
             System.out.println(type.getTitle() + ": " + resume.getContact(type));
@@ -19,22 +19,20 @@ public class ResumeTestData {
 
     public static Resume fillResume(String uuid, String fullname) {
         Resume resume = new Resume(uuid, fullname);
-
-        resume.saveContact(ContactType.PHONE, "+7(921) 855-0482");
-        resume.saveContact(ContactType.MAIL, "gkislin@yandex.ru");
-        resume.saveContact(ContactType.SKYPE, "grigory.kislin");
-        resume.saveContact(ContactType.LINKEDIN, "Профиль LinkedIn");
-        resume.saveContact(ContactType.GITHUB, "Профиль GitHub");
-        resume.saveContact(ContactType.STACKOVERFLOW, "Профиль Stackoverflow");
-        resume.saveContact(ContactType.OTHER_HOMEPAGE, "Домашняя страница");
-
-        resume.saveSection(SectionType.OBJECTIVE,
+        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
+        resume.addContact(ContactType.MAIL, "gkislin@yandex.ru");
+        resume.addContact(ContactType.SKYPE, "grigory.kislin");
+        resume.addContact(ContactType.LINKEDIN, "Профиль LinkedIn");
+        resume.addContact(ContactType.GITHUB, "Профиль GitHub");
+        resume.addContact(ContactType.STACKOVERFLOW, "Профиль Stackoverflow");
+        resume.addContact(ContactType.OTHER_HOMEPAGE, "Домашняя страница");
+        resume.addSection(SectionType.OBJECTIVE,
                 new SingleTextSection("Ведущий стажировок и корпоративного обучения по Java Web " +
                         "и Enterprise технологиям"));
-        resume.saveSection(SectionType.PERSONAL,
+        resume.addSection(SectionType.PERSONAL,
                 new SingleTextSection("Аналитический склад ума, сильная логика, креативность, инициативность. " +
                         "Пурист кода и архитектуры."));
-        resume.saveSection(SectionType.ACHIEVEMENT,
+        resume.addSection(SectionType.ACHIEVEMENT,
                 new ListSection(
                         "С 2013 года: разработка проектов 'Разработка Web приложения'," +
                                 "'Java Enterprise', 'Многомодульный maven. Многопоточность. XML (JAXB/StAX). " +
@@ -54,8 +52,7 @@ public class ResumeTestData {
                                 "для администрирования и мониторинга системы по JMX (Jython/ Django).",
                         "Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat," +
                                 " Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа."));
-
-        resume.saveSection(SectionType.QUALIFICATIONS,
+        resume.addSection(SectionType.QUALIFICATIONS,
                 new ListSection("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2",
                         "Version control: Subversion, Git, Mercury, ClearCase, Perforce",
                         "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle",
@@ -78,23 +75,22 @@ public class ResumeTestData {
                         "Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, " +
                                 "архитектурных шаблонов, UML, функционального программирования",
                         "Родной русский, английский 'upper intermediate'"));
-
-        resume.saveSection(SectionType.EXPERIENCE,
+        resume.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
-                        new Experience("Java Online Projects", "",
+                        new Experience("Java Online Projects", null,
                                 new Experience.Position("Автор проекта.",
-                                        YearMonth.of(2013, 10), YearMonth.of(2020, 8),
+                                        2013, Month.OCTOBER,
                                         "Создание, организация и проведение Java онлайн проектов и стажировок.")),
-                        new Experience("Wrike", "",
+                        new Experience("Wrike", null,
                                 new Experience.Position("Старший разработчик (backend)",
-                                        YearMonth.of(2014, 10), YearMonth.of(2016, 1),
+                                        2014, Month.OCTOBER, 2016, Month.JANUARY,
                                         "Проектирование и разработка онлайн платформы управления проектами " +
                                                 "Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL," +
                                                 " Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2," +
                                                 " JWT SSO.")),
-                        new Experience("RIT Center", "",
+                        new Experience("RIT Center", null,
                                 new Experience.Position("Java архитектор",
-                                        YearMonth.of(2012, 4), YearMonth.of(2014, 10),
+                                        2012, Month.APRIL, 2014, Month.OCTOBER,
                                         "Организация процесса разработки системы ERP для разных окружений: " +
                                                 "релизная политика, версионирование, ведение CI (Jenkins), миграция " +
                                                 "базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx)," +
@@ -106,71 +102,70 @@ public class ResumeTestData {
                                                 " Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita," +
                                                 "Python scripting, Unix shell remote scripting via ssh tunnels, " +
                                                 "PL/Python")),
-                        new Experience("Luxoft (Deutsche Bank)", "",
+                        new Experience("Luxoft (Deutsche Bank)", null,
                                 new Experience.Position("Ведущий программист",
-                                        YearMonth.of(2010, 12), YearMonth.of(2012, 4),
+                                        2010, Month.DECEMBER, 2012, Month.APRIL,
                                         "Участие в проекте Deutsche Bank CRM (WebLogic, Hibernate, Spring, " +
                                                 "Spring MVC, SmartGWT, GWT, Jasper, Oracle). Реализация клиентской и " +
                                                 "серверной части CRM. Реализация RIA-приложения для администрирования," +
                                                 " мониторинга и анализа результатов в области алгоритмического " +
                                                 "трейдинга. JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Highstock, " +
                                                 "Commet, HTML5.")),
-                        new Experience("Yota", "",
+                        new Experience("Yota", null,
                                 new Experience.Position("Ведущий специалист",
-                                        YearMonth.of(2008, 6), YearMonth.of(2010, 12),
+                                        2008, Month.JUNE, 2010, Month.DECEMBER,
                                         "Дизайн и имплементация Java EE фреймворка для отдела " +
                                                 "\"Платежные Системы\" (GlassFish v2.1, v3, OC4J, EJB3, JAX-WS RI 2.1, " +
                                                 "Servlet 2.4, JSP, JMX, JMS, Maven2). Реализация администрирования, " +
                                                 "статистики и мониторинга фреймворка. Разработка online JMX клиента " +
                                                 "(Python/ Jython, Django, ExtJS)")),
-                        new Experience("Enkata", "",
+                        new Experience("Enkata", null,
                                 new Experience.Position("Разработчик ПО",
-                                        YearMonth.of(2007, 3), YearMonth.of(2008, 6),
+                                        2007, Month.MARCH, 2008, Month.JUNE,
                                         "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, " +
                                                 "Hibernate 3.0, Tomcat, JMS) частей кластерного J2EE приложения " +
                                                 "(OLAP, Data mining).")),
-                        new Experience("Siemens AG", "",
+                        new Experience("Siemens AG", null,
                                 new Experience.Position("Разработчик ПО",
-                                        YearMonth.of(2005, 1), YearMonth.of(2007, 2),
+                                        2005, Month.JANUARY, 2007, Month.FEBRUARY,
                                         "Разработка информационной модели, проектирование интерфейсов, " +
                                                 "реализация и отладка ПО на мобильной IN платформе Siemens @vantage " +
                                                 "(Java, Unix).")),
-                        new Experience("Alcatel", "",
+                        new Experience("Alcatel", null,
                                 new Experience.Position("Инженер по аппаратному и программному тестированию",
-                                        YearMonth.of(1997, 9), YearMonth.of(2005, 1),
+                                        1997, Month.SEPTEMBER, 2005, Month.JANUARY,
                                         "Тестирование, отладка, внедрение ПО цифровой телефонной станции " +
                                                 "Alcatel 1000 S12 (CHILL, ASM)."))));
-
-        resume.saveSection(SectionType.EDUCATION,
+        resume.addSection(SectionType.EDUCATION,
                 new OrganizationSection(
-                        new Experience("Coursera", "",
-                                new Experience.Position("",
-                                        YearMonth.of(2013, 3), YearMonth.of(2013, 5),
+                        new Experience("Coursera", null,
+                                new Experience.Position(null,
+                                        2013, Month.MARCH, 2013, Month.MAY,
                                         "'Functional Programming Principles in Scala' by Martin Odersky")),
-                        new Experience("Luxoft", "",
-                                new Experience.Position("",
-                                        YearMonth.of(2011, 3), YearMonth.of(2011, 4),
+                        new Experience("Luxoft", null,
+                                new Experience.Position(null,
+                                        2011, Month.MARCH, 2011, Month.APRIL,
                                         "Курс 'Объектно-ориентированный анализ ИС. Концептуальное " +
                                                 "моделирование на UML.")),
-                        new Experience("Siemens AG", "",
-                                new Experience.Position("",
-                                        YearMonth.of(2005, 1), YearMonth.of(2005, 4),
+                        new Experience("Siemens AG", null,
+                                new Experience.Position(null,
+                                        2005, Month.JANUARY, 2005, Month.APRIL,
                                         "3 месяца обучения мобильным IN сетям (Берлин)")),
-                        new Experience("Alcatel", "",
-                                new Experience.Position("",
-                                        YearMonth.of(1997, 9), YearMonth.of(1998, 3),
+                        new Experience("Alcatel", null,
+                                new Experience.Position(null,
+                                        1997, Month.SEPTEMBER, 1998, Month.MARCH,
                                         "6 месяцев обучения цифровым телефонным сетям (Москва)")),
                         new Experience("Санкт-Петербургский национальный исследовательский университет " +
-                                "информационных технологий, механики и оптики", "",
-                                new Experience.Position("",
-                                        YearMonth.of(1993, 9), YearMonth.of(1996, 7),
+                                "информационных технологий, механики и оптики", null,
+                                new Experience.Position(null,
+                                        1993, Month.SEPTEMBER, 1996, Month.JULY,
                                         "Аспирантура (программист С, С++)"),
-                                new Experience.Position("",
-                                        YearMonth.of(1987, 9), YearMonth.of(1993, 7),
+                                new Experience.Position(null,
+                                        1987, Month.SEPTEMBER, 1993, Month.JULY,
                                         "Инженер (программист Fortran, C)")),
-                        new Experience("Заочная физико-техническая школа при МФТИ", "",
-                                new Experience.Position("",
-                                        YearMonth.of(1984, 9), YearMonth.of(1987, 6),
+                        new Experience("Заочная физико-техническая школа при МФТИ", null,
+                                new Experience.Position(null,
+                                        1984, Month.SEPTEMBER, 1987, Month.JUNE,
                                         "Закончил с отличием"))));
         return resume;
     }

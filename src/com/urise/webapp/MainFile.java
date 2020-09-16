@@ -7,7 +7,6 @@ import java.io.IOException;
 public class MainFile {
     public static void main(String[] args) throws IOException {
         String filepath = ".\\.gitignore";
-
         File file = new File(filepath);
         try {
             System.out.println(file.getCanonicalPath());
@@ -27,6 +26,7 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        directoryTraversal(dir);
     }
 
     public static void directoryTraversal(File dir) {

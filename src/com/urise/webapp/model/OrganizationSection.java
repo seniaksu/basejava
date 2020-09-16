@@ -5,24 +5,25 @@ import java.util.List;
 import java.util.Objects;
 
 public class OrganizationSection extends AbstractSection {
-    private final List<Experience> positions;
+    private static final long serialVersionUID = 1L;
+    private final List<Experience> organizations;
 
-    public OrganizationSection(Experience... positions) {
-        this(Arrays.asList(positions));
+    public OrganizationSection(Experience... organizations) {
+        this(Arrays.asList(organizations));
     }
 
-    public OrganizationSection(List<Experience> positions) {
-        Objects.requireNonNull(positions, "positions must not be null");
-        this.positions = positions;
+    public OrganizationSection(List<Experience> organizations) {
+        Objects.requireNonNull(organizations, "organizations must not be null");
+        this.organizations = organizations;
     }
 
-    public List<Experience> getPositions() {
-        return positions;
+    public List<Experience> getOrganizations() {
+        return organizations;
     }
 
     @Override
     public String toString() {
-        return positions.toString();
+        return organizations.toString();
     }
 
     @Override
@@ -30,11 +31,11 @@ public class OrganizationSection extends AbstractSection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrganizationSection that = (OrganizationSection) o;
-        return positions.equals(that.positions);
+        return Objects.equals(organizations, that.organizations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(positions);
+        return Objects.hash(organizations);
     }
 }

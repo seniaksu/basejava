@@ -1,11 +1,17 @@
 package com.urise.webapp.model;
 
+import java.io.Serializable;
+import java.time.Month;
 import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class Experience {
+import static com.urise.webapp.util.DateUtil.NOW;
+import static com.urise.webapp.util.DateUtil.of;
+
+public class Experience implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final Link homepage;
     private final List<Position> positions;
 
@@ -33,8 +39,8 @@ public class Experience {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Experience that = (Experience) o;
-        return homepage.equals(that.homepage) &&
-                positions.equals(that.positions);
+        return Objects.equals(homepage, that.homepage) &&
+                Objects.equals(positions, that.positions);
     }
 
     @Override
@@ -44,23 +50,27 @@ public class Experience {
 
     @Override
     public String toString() {
-        return "Experience{" +
-                "homepage=" + homepage +
-                ", positions=" + positions +
-                '}';
+        return "Experience{" + homepage + ", " + positions + '}';
     }
 
-    public static class Position {
+    public static class Position implements Serializable {
+        private static final long serialVersionUID = 1L;
         private final String title;
         private final YearMonth startDate;
         private final YearMonth endDate;
         private final String description;
 
+        public Position(String title, int startYear, Month startMonth, String description) {
+            this(title, of(startYear, startMonth), NOW, description);
+        }
+
+        public Position(String title, int startYear, Month startMonth, int endYear, Month endMonth, String description) {
+            this(title, of(startYear, startMonth), of(endYear, endMonth), description);
+        }
+
         public Position(String title, YearMonth startDate, YearMonth endDate, String description) {
-            Objects.requireNonNull(title, "title must not be null");
             Objects.requireNonNull(startDate, "startDate must not be null");
             Objects.requireNonNull(endDate, "endDate must not be null");
-            Objects.requireNonNull(description, "description must not be null");
             this.title = title;
             this.startDate = startDate;
             this.endDate = endDate;
@@ -88,10 +98,10 @@ public class Experience {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Position position = (Position) o;
-            return title.equals(position.title) &&
-                    startDate.equals(position.startDate) &&
-                    endDate.equals(position.endDate) &&
-                    description.equals(position.description);
+            return Objects.equals(title, position.title) &&
+                    Objects.equals(startDate, position.startDate) &&
+                    Objects.equals(endDate, position.endDate) &&
+                    Objects.equals(description, position.description);
         }
 
         @Override
@@ -101,13 +111,7 @@ public class Experience {
 
         @Override
         public String toString() {
-            return "Position{" +
-                    "title='" + title + '\'' +
-                    ", startDate=" + startDate +
-                    ", endDate=" + endDate +
-                    ", description='" + description + '\'' +
-                    '}';
+            return "Position{" + title + ", " + startDate + ", " + endDate + ", " + description + '}';
         }
     }
 }
-

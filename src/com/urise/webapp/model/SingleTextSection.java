@@ -3,6 +3,7 @@ package com.urise.webapp.model;
 import java.util.Objects;
 
 public class SingleTextSection extends AbstractSection {
+    private static final long serialVersionUID = 1L;
     private final String content;
 
     public SingleTextSection(String content) {
@@ -19,7 +20,7 @@ public class SingleTextSection extends AbstractSection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SingleTextSection that = (SingleTextSection) o;
-        return content.equals(that.content);
+        return Objects.equals(content, that.content);
     }
 
     @Override

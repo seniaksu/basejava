@@ -6,6 +6,7 @@ import com.urise.webapp.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static com.urise.webapp.ResumeTestData.fillResume;
 
 public abstract class AbstractStorageTest {
+    protected static final File STORAGE_DIR = new File("C:\\Users\\funky\\IdeaProjects\\basejava\\Storage");
     protected Storage storage;
 
     private static final Resume r1 = fillResume("uuid1", "Name1");
