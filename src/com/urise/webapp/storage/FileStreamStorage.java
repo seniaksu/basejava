@@ -11,11 +11,9 @@ import java.util.Objects;
 
 public class FileStreamStorage extends AbstractStorage<File> {
     private File directory;
-    private File[] folder;
     private Serializer serializer;
 
     protected FileStreamStorage(File directory, Serializer serializer) {
-        this.serializer = serializer;
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + "is not directory");
@@ -24,6 +22,7 @@ public class FileStreamStorage extends AbstractStorage<File> {
             throw new IllegalArgumentException(directory.getAbsolutePath() + "is not readable/writable");
         }
         this.directory = directory;
+        this.serializer = serializer;
     }
 
     @Override
@@ -72,13 +71,10 @@ public class FileStreamStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected List<Resume> getAllElement() {
-        folder = directory.listFiles();
-        if (folder == null) {
-            throw new StorageException("Directory read error", null);
-        }
-        List<Resume> list = new ArrayList<>(folder.length);
-        for (File file : folder) {
+    protected List<Resume> getAllElements() {
+        File[] files = getFilesList();
+        List<Resume> list = new ArrayList<>(files.length);
+        for (File file : files) {
             list.add(getElement(file));
         }
         return list;
@@ -86,11 +82,9 @@ public class FileStreamStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        folder = directory.listFiles();
-        if (folder != null) {
-            for (File file : folder) {
-                deleteElement(file);
-            }
+        File[] files = getFilesList();
+        for (File file : files) {
+            deleteElement(file);
         }
     }
 
@@ -101,5 +95,12 @@ public class FileStreamStorage extends AbstractStorage<File> {
             throw new StorageException("Directory read error", null);
         }
         return list.length;
+    }
+
+    private File[] getFilesList() {
+        if (directory.listFiles() == null) {
+            throw new StorageException("Directory read error", null);
+        }
+        return directory.listFiles();
     }
 }

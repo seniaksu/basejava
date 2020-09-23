@@ -13,7 +13,7 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException("Error", e);
         }
-        File dir = new File("./src/com/urise/webapp");
+        File dir = new File("./");
         System.out.println(dir.isDirectory());
         String[] list = dir.list();
         if (list != null) {
@@ -29,15 +29,15 @@ public class MainFile {
         directoryTraversal(dir, "");
     }
 
-    public static void directoryTraversal(File dir, String space) {
-        File[] folder = dir.listFiles();
-        if (folder != null) {
-            for (File file : folder) {
+    private static void directoryTraversal(File dir, String space) {
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File file : files) {
                 if (file.isFile()) {
-                    System.out.println(space + "File:" + file.getName());
+                    System.out.println(space + "File: " + file.getName());
                 } else if (file.isDirectory()) {
-                    System.out.println("Directory:" + file.getName());
-                    directoryTraversal(file, space + "   ");
+                    System.out.println(space + "Directory: " + file.getName());
+                    directoryTraversal(file, space + "\t");
                 }
             }
         }

@@ -23,7 +23,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract boolean isExist(SK searchKey);
 
-    protected abstract List<Resume> getAllElement();
+    protected abstract List<Resume> getAllElements();
 
     public Resume get(String uuid) {
         LOG.info("Get " + uuid);
@@ -51,7 +51,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     public List<Resume> getAllSorted() {
         LOG.info("getAllSorted");
-        List<Resume> list = getAllElement();
+        List<Resume> list = getAllElements();
         list.sort(Resume::compareTo);
         return list;
     }

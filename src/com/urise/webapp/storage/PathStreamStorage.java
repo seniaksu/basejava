@@ -11,18 +11,19 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PathStreamStorage extends AbstractStorage<Path> {
     private Path directory;
     private Serializer serializer;
 
     protected PathStreamStorage(String dir, Serializer serializer) {
-        this.serializer = serializer;
         Objects.requireNonNull(dir, "directory must not be null");
         directory = Paths.get(dir);
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + "is not directory or is not writable");
         }
+        this.serializer = serializer;
     }
 
     @Override
@@ -73,27 +74,23 @@ public class PathStreamStorage extends AbstractStorage<Path> {
     }
 
     @Override
-    protected List<Resume> getAllElement() {
-        try {
-            return Files.list(directory).map(this::getElement).collect(Collectors.toList());
-        } catch (IOException e) {
-            throw new StorageException("Path read error", null, e);
-        }
+    protected List<Resume> getAllElements() {
+        return getFilesList().map(this::getElement).collect(Collectors.toList());
     }
 
     @Override
     public void clear() {
-        try {
-            Files.list(directory).forEach(this::deleteElement);
-        } catch (IOException e) {
-            throw new StorageException("Past delete error", null, e);
-        }
+        getFilesList().forEach(this::deleteElement);
     }
 
     @Override
     public int size() {
+        return (int) getFilesList().count();
+    }
+
+    private Stream<Path> getFilesList() {
         try {
-            return (int) Files.list(directory).count();
+            return Files.list(directory);
         } catch (IOException e) {
             throw new StorageException("Directory read error", null, e);
         }

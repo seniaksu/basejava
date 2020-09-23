@@ -19,7 +19,7 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    public List<Resume> getAllElement() {
+    public List<Resume> getAllElements() {
         return new ArrayList<>(list);
     }
 
