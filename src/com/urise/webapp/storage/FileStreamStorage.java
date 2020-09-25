@@ -5,6 +5,7 @@ import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.serialization.Serializer;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,7 +31,7 @@ public class FileStreamStorage extends AbstractStorage<File> {
         try {
             file.createNewFile();
         } catch (IOException e) {
-            throw new StorageException("Couldn't create file " + file.getAbsolutePath(), file.getName(), e);
+            throw new StorageException("Couldn't create file " + file.getAbsolutePath(), getFileName(file), e);
         }
         updateElement(file, resume);
     }
@@ -47,7 +48,7 @@ public class FileStreamStorage extends AbstractStorage<File> {
     @Override
     protected void deleteElement(File file) {
         if (!file.delete()) {
-            throw new StorageException("File delete error", file.getName());
+            throw new StorageException("File delete error", getFileName(file));
         }
     }
 
@@ -56,7 +57,7 @@ public class FileStreamStorage extends AbstractStorage<File> {
         try {
             return serializer.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("File read error", file.getName(), e);
+            throw new StorageException("File read error", getFileName(file), e);
         }
     }
 
@@ -72,9 +73,8 @@ public class FileStreamStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> getAllElements() {
-        File[] files = getFilesList();
-        List<Resume> list = new ArrayList<>(files.length);
-        for (File file : files) {
+        List<Resume> list = new ArrayList<>(getFilesList().length);
+        for (File file : getFilesList()) {
             list.add(getElement(file));
         }
         return list;
@@ -82,19 +82,14 @@ public class FileStreamStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        File[] files = getFilesList();
-        for (File file : files) {
+        for (File file : getFilesList()) {
             deleteElement(file);
         }
     }
 
     @Override
     public int size() {
-        String[] list = directory.list();
-        if (list == null) {
-            throw new StorageException("Directory read error", null);
-        }
-        return list.length;
+        return getFilesList().length;
     }
 
     private File[] getFilesList() {
@@ -102,5 +97,9 @@ public class FileStreamStorage extends AbstractStorage<File> {
             throw new StorageException("Directory read error", null);
         }
         return directory.listFiles();
+    }
+
+    private String getFileName(File file) {
+        return file.getName();
     }
 }

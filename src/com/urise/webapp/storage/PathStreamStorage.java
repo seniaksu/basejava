@@ -31,7 +31,7 @@ public class PathStreamStorage extends AbstractStorage<Path> {
         try {
             Files.createFile(path);
         } catch (IOException e) {
-            throw new StorageException("Couldn't create pass " + path, path.getFileName().toString(), e);
+            throw new StorageException("Couldn't create pass " + path, getFileName(path), e);
         }
         updateElement(path, resume);
     }
@@ -50,7 +50,7 @@ public class PathStreamStorage extends AbstractStorage<Path> {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            throw new StorageException("Path delete error", path.getFileName().toString(), e);
+            throw new StorageException("Path delete error", getFileName(path), e);
         }
     }
 
@@ -59,7 +59,7 @@ public class PathStreamStorage extends AbstractStorage<Path> {
         try {
             return serializer.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
-            throw new StorageException("File read error", path.getFileName().toString(), e);
+            throw new StorageException("File read error", getFileName(path), e);
         }
     }
 
@@ -94,5 +94,9 @@ public class PathStreamStorage extends AbstractStorage<Path> {
         } catch (IOException e) {
             throw new StorageException("Directory read error", null, e);
         }
+    }
+
+    private String getFileName(Path path) {
+        return path.getFileName().toString();
     }
 }
