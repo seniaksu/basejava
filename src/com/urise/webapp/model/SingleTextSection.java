@@ -4,7 +4,10 @@ import java.util.Objects;
 
 public class SingleTextSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
-    private final String content;
+    private String content;
+
+    public SingleTextSection() {
+    }
 
     public SingleTextSection(String content) {
         Objects.requireNonNull(content, "content must not be null");

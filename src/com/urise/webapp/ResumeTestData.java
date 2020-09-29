@@ -1,8 +1,8 @@
 package com.urise.webapp;
 
-import com.urise.webapp.model.*;
-
-import java.time.Month;
+import com.urise.webapp.model.ContactType;
+import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.SectionType;
 
 public class ResumeTestData {
 
@@ -26,7 +26,7 @@ public class ResumeTestData {
         resume.addContact(ContactType.GITHUB, "Профиль GitHub");
         resume.addContact(ContactType.STACKOVERFLOW, "Профиль Stackoverflow");
         resume.addContact(ContactType.OTHER_HOMEPAGE, "Домашняя страница");
-        resume.addSection(SectionType.OBJECTIVE,
+      /*  resume.addSection(SectionType.OBJECTIVE,
                 new SingleTextSection("Ведущий стажировок и корпоративного обучения по Java Web " +
                         "и Enterprise технологиям"));
         resume.addSection(SectionType.PERSONAL,
@@ -167,6 +167,6 @@ public class ResumeTestData {
                                 new Experience.Position(null,
                                         1984, Month.SEPTEMBER, 1987, Month.JUNE,
                                         "Закончил с отличием"))));
-        return resume;
+       */ return resume;
     }
 }

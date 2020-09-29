@@ -1,5 +1,10 @@
 package com.urise.webapp.model;
 
+import com.urise.webapp.util.LocalDateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.Month;
 import java.time.YearMonth;
@@ -10,10 +15,14 @@ import java.util.Objects;
 import static com.urise.webapp.util.DateUtil.NOW;
 import static com.urise.webapp.util.DateUtil.of;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Experience implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final Link homepage;
-    private final List<Position> positions;
+    private Link homepage;
+    private List<Position> positions;
+
+    public Experience() {
+    }
 
     public Experience(String name, String url, Position... positions) {
         this(new Link(name, url), Arrays.asList(positions));
@@ -53,12 +62,18 @@ public class Experience implements Serializable {
         return "Experience{" + homepage + ", " + positions + '}';
     }
 
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class Position implements Serializable {
         private static final long serialVersionUID = 1L;
-        private final String title;
-        private final YearMonth startDate;
-        private final YearMonth endDate;
-        private final String description;
+        private String title;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private YearMonth startDate;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private YearMonth endDate;
+        private String description;
+
+        public Position() {
+        }
 
         public Position(String title, int startYear, Month startMonth, String description) {
             this(title, of(startYear, startMonth), NOW, description);
