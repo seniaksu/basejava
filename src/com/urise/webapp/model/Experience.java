@@ -28,6 +28,10 @@ public class Experience implements Serializable {
         this(new Link(name, url), Arrays.asList(positions));
     }
 
+    public Experience(String name, String url, List<Position> positions) {
+        this(new Link(name, url), positions);
+    }
+
     public Experience(Link homepage, List<Position> positions) {
         Objects.requireNonNull(homepage, "homepage must not be null");
         Objects.requireNonNull(positions, "positions must not be null");
