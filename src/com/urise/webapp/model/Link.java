@@ -17,7 +17,7 @@ public class Link implements Serializable {
     public Link(String name, String url) {
         Objects.requireNonNull(name, "name must not be null");
         this.name = name;
-        this.url = url;
+        this.url = url == null ? "" : url;
     }
 
     public String getName() {
@@ -38,7 +38,7 @@ public class Link implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Link link = (Link) o;
-        return Objects.equals(name, link.name) &&
+        return name.equals(link.name) &&
                 Objects.equals(url, link.url);
     }
 

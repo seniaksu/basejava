@@ -47,7 +47,7 @@ public class DataStreamSerializer implements Serializer {
             String url = dis.readUTF();
 
             int positionSize = dis.readInt();
-            for (int j = 0; j < positionSize; j++ ) {
+            for (int j = 0; j < positionSize; j++) {
                 p.add(new Experience.Position(dis.readUTF(), readLocalDate(dis), readLocalDate(dis), dis.readUTF()));
             }
             s.add(new Experience(name, url, p));
@@ -81,7 +81,7 @@ public class DataStreamSerializer implements Serializer {
                 SectionType type = entry.getKey();
                 AbstractSection section = entry.getValue();
                 dos.writeUTF(type.name());
-                switch (type){
+                switch (type) {
                     case PERSONAL:
                     case OBJECTIVE:
                         dos.writeUTF(type.name());

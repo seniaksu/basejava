@@ -52,8 +52,8 @@ public class Experience implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Experience that = (Experience) o;
-        return Objects.equals(homepage, that.homepage) &&
-                Objects.equals(positions, that.positions);
+        return homepage.equals(that.homepage) &&
+                positions.equals(that.positions);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class Experience implements Serializable {
         public Position(String title, YearMonth startDate, YearMonth endDate, String description) {
             Objects.requireNonNull(startDate, "startDate must not be null");
             Objects.requireNonNull(endDate, "endDate must not be null");
-            this.title = title;
+            this.title = title == null ? "" : title;
             this.startDate = startDate;
             this.endDate = endDate;
             this.description = description;
@@ -118,9 +118,9 @@ public class Experience implements Serializable {
             if (o == null || getClass() != o.getClass()) return false;
             Position position = (Position) o;
             return Objects.equals(title, position.title) &&
-                    Objects.equals(startDate, position.startDate) &&
-                    Objects.equals(endDate, position.endDate) &&
-                    Objects.equals(description, position.description);
+                    startDate.equals(position.startDate) &&
+                    endDate.equals(position.endDate) &&
+                    description.equals(position.description);
         }
 
         @Override
