@@ -5,6 +5,7 @@ import com.urise.webapp.model.*;
 import java.io.*;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -15,52 +16,37 @@ public class DataStreamSerializer implements Serializer {
         }
     }
 
-    private ListSection readListSection(DataInputStream dis) throws IOException {
+    private <T> List<T> readListSection(DataInputStream dis, Reader<T> reader) throws IOException {
         int size = dis.readInt();
-        List<String> list = new ArrayList<>();
+        List<T> list = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            list.add(dis.readUTF());
+            list.add(reader.read());
         }
-        return new ListSection(list);
+        return list;
     }
 
-    private void writeOrganizationSections(List<Experience> organizations, DataOutputStream dos) throws IOException {
-        for (Experience s : organizations) {
-            dos.writeUTF(s.getHomepage().getName());
-            dos.writeUTF(s.getHomepage().getUrl());
-            dos.writeInt(s.getPositions().size());
-            for (Experience.Position p : s.getPositions()) {
-                dos.writeUTF(p.getTitle());
-                writeDate(p.getStartDate(), dos);
-                writeDate(p.getEndDate(), dos);
-                dos.writeUTF(p.getDescription());
-            }
+    private <T> void writeOrganizationSections(Collection<T> collection, DataOutputStream dos, Writer<T> writer) throws IOException {
+        dos.writeInt(collection.size());
+        for (T item : collection) {
+            writer.write(item);
         }
     }
 
-    private OrganizationSection readOrganizationSection(DataInputStream dis) throws IOException {
-        int size = dis.readInt();
-        List<Experience> s = new ArrayList<>();
-        List<Experience.Position> p = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            String name = dis.readUTF();
-            String url = dis.readUTF();
-
-            int positionSize = dis.readInt();
-            for (int j = 0; j < positionSize; j++) {
-                p.add(new Experience.Position(dis.readUTF(), readLocalDate(dis), readLocalDate(dis), dis.readUTF()));
-            }
-            s.add(new Experience(name, url, p));
-        }
-        return new OrganizationSection(s);
-    }
     private void writeDate(YearMonth date, DataOutputStream dos) throws IOException {
         dos.writeInt(date.getYear());
         dos.writeInt(date.getMonth().getValue());
     }
 
-    private YearMonth readLocalDate(DataInputStream dis) throws IOException {
+    private YearMonth readDate(DataInputStream dis) throws IOException {
         return YearMonth.of(dis.readInt(), dis.readInt());
+    }
+
+    private interface Writer<T> {
+        void write(T t) throws IOException;
+    }
+
+    private interface Reader<T> {
+        T read() throws IOException;
     }
 
     @Override
@@ -84,20 +70,25 @@ public class DataStreamSerializer implements Serializer {
                 switch (type) {
                     case PERSONAL:
                     case OBJECTIVE:
-                        dos.writeUTF(type.name());
                         dos.writeUTF(((SingleTextSection) section).getContent());
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        dos.writeUTF(type.name());
                         dos.writeInt(((ListSection) section).getContent().size());
                         writeListSections(((ListSection) section).getContent(), dos);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        dos.writeUTF(type.name());
-                        dos.writeInt(((OrganizationSection) section).getOrganizations().size());
-                        writeOrganizationSections(((OrganizationSection) section).getOrganizations(), dos);
+                        writeOrganizationSections(((OrganizationSection) section).getOrganizations(), dos, org -> {
+                            dos.writeUTF(org.getHomepage().getName());
+                            dos.writeUTF(org.getHomepage().getUrl());
+                            writeOrganizationSections(org.getPositions(), dos, position -> {
+                                dos.writeUTF(position.getTitle());
+                                writeDate(position.getStartDate(), dos);
+                                writeDate(position.getEndDate(), dos);
+                                dos.writeUTF(position.getDescription());
+                            });
+                        });
                         break;
                 }
             }
@@ -114,23 +105,26 @@ public class DataStreamSerializer implements Serializer {
             for (int i = 0; i < contactSize; i++) {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
-            // TODO implements sections
             int sectionSize = dis.readInt();
             for (int i = 0; i < sectionSize; i++) {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
                     case PERSONAL:
                     case OBJECTIVE:
-                        resume.addSection(SectionType.valueOf(dis.readUTF()), new SingleTextSection(dis.readUTF()));
+                        resume.addSection(sectionType, new SingleTextSection(dis.readUTF()));
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        resume.addSection(SectionType.valueOf(dis.readUTF()), readListSection(dis));
+                        resume.addSection(sectionType, new ListSection(readListSection(dis, dis::readUTF)));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        resume.addSection(SectionType.valueOf(dis.readUTF()), readOrganizationSection(dis));
-                        break;
+                        resume.addSection(sectionType, new OrganizationSection(
+                                readListSection(dis, () -> new Experience(new Link(dis.readUTF(), dis.readUTF()),
+                                        readListSection(dis, () -> new Experience.Position(dis.readUTF(),
+                                                readDate(dis), readDate(dis), dis.readUTF()
+                                        ))
+                                ))));
                 }
             }
             return resume;

@@ -28,10 +28,6 @@ public class Experience implements Serializable {
         this(new Link(name, url), Arrays.asList(positions));
     }
 
-    public Experience(String name, String url, List<Position> positions) {
-        this(new Link(name, url), positions);
-    }
-
     public Experience(Link homepage, List<Position> positions) {
         Objects.requireNonNull(homepage, "homepage must not be null");
         Objects.requireNonNull(positions, "positions must not be null");
@@ -52,8 +48,8 @@ public class Experience implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Experience that = (Experience) o;
-        return homepage.equals(that.homepage) &&
-                positions.equals(that.positions);
+        return Objects.equals(homepage, that.homepage) &&
+                Objects.equals(positions, that.positions);
     }
 
     @Override
@@ -118,9 +114,9 @@ public class Experience implements Serializable {
             if (o == null || getClass() != o.getClass()) return false;
             Position position = (Position) o;
             return Objects.equals(title, position.title) &&
-                    startDate.equals(position.startDate) &&
-                    endDate.equals(position.endDate) &&
-                    description.equals(position.description);
+                    Objects.equals(startDate, position.startDate) &&
+                    Objects.equals(endDate, position.endDate) &&
+                    Objects.equals(description, position.description);
         }
 
         @Override
