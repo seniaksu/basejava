@@ -17,14 +17,14 @@ public class DataStreamSerializer implements Serializer {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
             Map<ContactType, String> contacts = resume.getContacts();
-            writeCollections(contacts.entrySet(), dos, entry -> {
+            writeCollection(contacts.entrySet(), dos, entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
 
             });
 
             Map<SectionType, AbstractSection> sections = resume.getSections();
-            writeCollections(sections.entrySet(), dos, entry -> {
+            writeCollection(sections.entrySet(), dos, entry -> {
                 SectionType type = entry.getKey();
                 AbstractSection section = entry.getValue();
                 dos.writeUTF(type.name());
@@ -35,15 +35,14 @@ public class DataStreamSerializer implements Serializer {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        dos.writeInt(((ListSection) section).getContent().size());
-                        writeListSections(((ListSection) section).getContent(), dos);
+                        writeCollection(((ListSection) section).getContent(), dos, dos::writeUTF);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        writeCollections(((OrganizationSection) section).getOrganizations(), dos, org -> {
+                        writeCollection(((OrganizationSection) section).getOrganizations(), dos, org -> {
                             dos.writeUTF(org.getHomepage().getName());
                             dos.writeUTF(org.getHomepage().getUrl());
-                            writeCollections(org.getPositions(), dos, position -> {
+                            writeCollection(org.getPositions(), dos, position -> {
                                 dos.writeUTF(position.getTitle());
                                 writeDate(position.getStartDate(), dos);
                                 writeDate(position.getEndDate(), dos);
@@ -62,12 +61,8 @@ public class DataStreamSerializer implements Serializer {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            int contactSize = dis.readInt();
-            for (int i = 0; i < contactSize; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
-            int sectionSize = dis.readInt();
-            for (int i = 0; i < sectionSize; i++) {
+            readSection(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            readSection(dis, () -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
                     case PERSONAL:
@@ -87,18 +82,12 @@ public class DataStreamSerializer implements Serializer {
                                         ))
                                 ))));
                 }
-            }
+            });
             return resume;
+            }
         }
-    }
 
-    private void writeListSections(List<String> content, DataOutputStream dos) throws IOException {
-        for (String s : content) {
-            dos.writeUTF(s);
-        }
-    }
-
-    private <T> void writeCollections(Collection<T> collection, DataOutputStream dos, Writer<T> writer) throws IOException {
+    private <T> void writeCollection(Collection<T> collection, DataOutputStream dos, Writer<T> writer) throws IOException {
         dos.writeInt(collection.size());
         for (T item : collection) {
             writer.write(item);
@@ -119,6 +108,13 @@ public class DataStreamSerializer implements Serializer {
         return list;
     }
 
+    private void readSection(DataInputStream dis, SectionRead reader) throws IOException {
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            reader.sectionRead();
+        }
+    }
+
     private YearMonth readDate(DataInputStream dis) throws IOException {
         return YearMonth.of(dis.readInt(), dis.readInt());
     }
@@ -129,6 +125,9 @@ public class DataStreamSerializer implements Serializer {
 
     private interface Reader<T> {
         T read() throws IOException;
+    }
+    private interface SectionRead {
+        void sectionRead () throws IOException;
     }
 }
 

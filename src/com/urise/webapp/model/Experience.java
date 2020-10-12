@@ -89,7 +89,7 @@ public class Experience implements Serializable {
             this.title = title == null ? "" : title;
             this.startDate = startDate;
             this.endDate = endDate;
-            this.description = description;
+            this.description = description == null ? "" : description;
         }
 
         public String getTitle() {
