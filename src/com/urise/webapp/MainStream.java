@@ -15,7 +15,7 @@ public class MainStream {
         System.out.println("values2: " + Arrays.toString(values2) + " out: " + minValue(values2));
 
         List<Integer> integers = new ArrayList<>();
-        for (int i = 1; i < 10; i++) {
+        for (int i = 2; i < 10; i++) {
             integers.add(i);
         }
         System.out.println("integers: " + integers.toString() + " out: " + oddOrEven(integers));
@@ -28,6 +28,6 @@ public class MainStream {
     private static List<Integer> oddOrEven(List<Integer> integers) {
         Map<Boolean, List<Integer>> oddOrEven =
                 integers.stream().collect(Collectors.partitioningBy(integer -> integer % 2 == 0));
-        return oddOrEven.get(integers.stream().mapToInt(Integer::intValue).sum() % 2 == 0);
+        return oddOrEven.get(integers.stream().mapToInt(Integer::intValue).sum() % 2 != 0);
     }
 }
