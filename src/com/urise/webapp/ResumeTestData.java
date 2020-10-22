@@ -1,8 +1,8 @@
 package com.urise.webapp;
 
-import com.urise.webapp.model.*;
-
-import java.time.Month;
+import com.urise.webapp.model.ContactType;
+import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.SectionType;
 
 public class ResumeTestData {
 
@@ -19,7 +19,7 @@ public class ResumeTestData {
 
     public static Resume fillResume(String uuid, String fullname) {
         Resume resume = new Resume(uuid, fullname);
-        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
+       /* resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
         resume.addContact(ContactType.MAIL, "gkislin@yandex.ru");
         resume.addContact(ContactType.SKYPE, "grigory.kislin");
         resume.addContact(ContactType.LINKEDIN, "Профиль LinkedIn");
@@ -166,7 +166,7 @@ public class ResumeTestData {
                         new Experience("Заочная физико-техническая школа при МФТИ", null,
                                 new Experience.Position(null,
                                         1984, Month.SEPTEMBER, 1987, Month.JUNE,
-                                        "Закончил с отличием"))));
+                                        "Закончил с отличием"))));*/
         return resume;
     }
 }

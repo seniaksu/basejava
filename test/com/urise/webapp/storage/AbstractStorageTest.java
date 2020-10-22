@@ -1,5 +1,6 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.Config;
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
@@ -14,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static com.urise.webapp.ResumeTestData.fillResume;
 
 public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("C:\\Users\\funky\\IdeaProjects\\basejava\\Storage");
+    protected static final File STORAGE_DIR = Config.get().getStorageDir();
     protected Storage storage;
 
     private static final Resume r1 = fillResume("uuid1", "Name1");
