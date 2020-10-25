@@ -5,7 +5,6 @@ import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.serialization.Serializer;
 
 import java.io.*;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -94,7 +93,7 @@ public class FileStreamStorage extends AbstractStorage<File> {
 
     private File[] getFilesList() {
         if (directory.listFiles() == null) {
-            throw new StorageException("Directory read error", null);
+            throw new StorageException("Directory read error", null, null);
         }
         return directory.listFiles();
     }
