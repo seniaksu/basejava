@@ -19,14 +19,14 @@ public class ResumeTestData {
 
     public static Resume fillResume(String uuid, String fullname) {
         Resume resume = new Resume(uuid, fullname);
-       /* resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
+        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
         resume.addContact(ContactType.MAIL, "gkislin@yandex.ru");
         resume.addContact(ContactType.SKYPE, "grigory.kislin");
         resume.addContact(ContactType.LINKEDIN, "Профиль LinkedIn");
         resume.addContact(ContactType.GITHUB, "Профиль GitHub");
         resume.addContact(ContactType.STACKOVERFLOW, "Профиль Stackoverflow");
         resume.addContact(ContactType.OTHER_HOMEPAGE, "Домашняя страница");
-        resume.addSection(SectionType.OBJECTIVE,
+        /*resume.addSection(SectionType.OBJECTIVE,
                 new SingleTextSection("Ведущий стажировок и корпоративного обучения по Java Web " +
                         "и Enterprise технологиям"));
         resume.addSection(SectionType.PERSONAL,
