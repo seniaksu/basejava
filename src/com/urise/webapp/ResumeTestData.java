@@ -1,8 +1,6 @@
 package com.urise.webapp;
 
-import com.urise.webapp.model.ContactType;
-import com.urise.webapp.model.Resume;
-import com.urise.webapp.model.SectionType;
+import com.urise.webapp.model.*;
 
 public class ResumeTestData {
 
@@ -26,7 +24,7 @@ public class ResumeTestData {
         resume.addContact(ContactType.GITHUB, "Профиль GitHub");
         resume.addContact(ContactType.STACKOVERFLOW, "Профиль Stackoverflow");
         resume.addContact(ContactType.OTHER_HOMEPAGE, "Домашняя страница");
-        /*resume.addSection(SectionType.OBJECTIVE,
+        resume.addSection(SectionType.OBJECTIVE,
                 new SingleTextSection("Ведущий стажировок и корпоративного обучения по Java Web " +
                         "и Enterprise технологиям"));
         resume.addSection(SectionType.PERSONAL,
@@ -75,7 +73,7 @@ public class ResumeTestData {
                         "Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, " +
                                 "архитектурных шаблонов, UML, функционального программирования",
                         "Родной русский, английский 'upper intermediate'"));
-        resume.addSection(SectionType.EXPERIENCE,
+        /*resume.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Experience("Java Online Projects", null,
                                 new Experience.Position("Автор проекта.",

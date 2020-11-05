@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
-    private static final File PROPS = new File(".\\config\\resumes.properties");
+    private static final File PROPS = new File(homeDir(), ".\\config\\resumes.properties");
     private static final Config INSTANCE = new Config();
     private final File storageDir;
     private final Storage storage;
@@ -28,6 +28,12 @@ public class Config {
         } catch (IOException e) {
             throw new IllegalStateException("Invalid config file" + PROPS.getAbsolutePath());
         }
+    }
+
+    private static File homeDir() {
+        String dir = System.getProperty("homeDir");
+        File homeDir = new File(dir == null ? "." : dir);
+        return homeDir;
     }
 
     public File getStorageDir() {
