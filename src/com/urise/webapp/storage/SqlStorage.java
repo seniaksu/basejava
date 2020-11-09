@@ -36,7 +36,7 @@ public class SqlStorage implements Storage {
                 ps.execute();
             }
             insertContacts(conn, resume);
-            insertSection (conn, resume);
+            insertSection(conn, resume);
             return null;
         });
     }
@@ -141,7 +141,7 @@ public class SqlStorage implements Storage {
             deleteContacts(conn, resume);
             deleteSections(conn, resume);
             insertContacts(conn, resume);
-            insertSection (conn, resume);
+            insertSection(conn, resume);
             return null;
         });
     }

@@ -1,6 +1,7 @@
 package com.urise.webapp.web;
 
 import com.urise.webapp.Config;
+import com.urise.webapp.model.ContactType;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.Storage;
 
@@ -10,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Writer;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage = Config.get().getStorage();
@@ -21,51 +21,47 @@ public class ResumeServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-
+        request.setCharacterEncoding("UTF-8");
+        String uuid = request.getParameter("uuid");
+        String fullName = request.getParameter("fullName");
+        Resume resume = storage.get(uuid);
+        resume.setFullName(fullName);
+        for (ContactType type : ContactType.values()) {
+            String value = request.getParameter(type.name());
+            if (value != null && value.trim().length() != 0) {
+                resume.addContact(type, value);
+            } else {
+                resume.getContacts().remove(type);
+            }
+        }
+        storage.update(resume);
+        response.sendRedirect("resume");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-//        response.setHeader("Content-Type", "text/html; charset=UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-//        String name = request.getParameter("name");
-//        response.getWriter().write(name == null ? "Hello Resumes!" : "Hello " + name + '!');
-
-        Writer table = response.getWriter();
-        table.write("<!DOCTYPE html>\n" +
-                "<html lang=\"en\">\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <style>\n" +
-                "        table, th, td {\n" +
-                "            border: 1px solid black;\n" +
-                "            border-collapse: collapse;\n" +
-                "        }\n" +
-                "        th, td {\n" +
-                "            padding: 15px;\n" +
-                "            text-align: left;\n" +
-                "        }\n" +
-                "    </style>\n" +
-                "    <title>Таблица резюме</title>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "<h2 align=\"center\" style=\"color:Black\">Таблица резюме</h2>\n" +
-                "<p align=\"center\" style=\"color:Black\">Отображение таблицы резюме в сервлете.</p>\n" +
-                "<table align=\"center\" style=\"width:50%\">\n" +
-                "    <tr>\n" +
-                "        <th>UUID</th>\n" +
-                "        <th>FullName</th>\n" +
-                "    </tr>\n" );
-        for (Resume resume : storage.getAllSorted()) {
-            table.write(
-                    "<tr>\n" +
-                            " <td>" + resume.getUuid() + "</td>\n"+
-                            " <td>" + resume.getFullName() + "</td>\n"+
-                            "</tr>\n");
+        String uuid = request.getParameter("uuid");
+        String action = request.getParameter("action");
+        if (action == null) {
+            request.setAttribute("resumes", storage.getAllSorted());
+            request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
+            return;
         }
-        table.write("</table>\n" +
-                "</body>\n" +
-                "</html>\n");
+        Resume resume;
+        switch (action) {
+            case "delete":
+                storage.delete(uuid);
+                response.sendRedirect("resume");
+                return;
+            case "view":
+            case "edit":
+                resume = storage.get(uuid);
+                break;
+            default:
+                throw new IllegalArgumentException("Action " + action + " is illegal");
+        }
+        request.setAttribute("resume", resume);
+        request.getRequestDispatcher(
+                ("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp")
+        ).forward(request, response);
     }
 }
