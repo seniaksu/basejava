@@ -3,6 +3,7 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.*;
 import com.urise.webapp.sql.SqlHelper;
+import com.urise.webapp.util.JsonParser;
 
 import java.sql.*;
 import java.util.*;
@@ -100,11 +101,8 @@ public class SqlStorage implements Storage {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     String uuid = rs.getString("uuid");
-                    Resume resume = resumes.get(uuid);
-                    if (resume == null) {
-                        resume = new Resume(uuid, rs.getString("full_name"));
-                        resumes.put(uuid, resume);
-                    }
+                    Resume resume = new Resume(uuid, rs.getString("full_name"));
+                    resumes.put(uuid, resume);
                 }
             }
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM contact c")) {
@@ -176,20 +174,8 @@ public class SqlStorage implements Storage {
             for (Map.Entry<SectionType, AbstractSection> e : resume.getSections().entrySet()) {
                 ps.setString(1, resume.getUuid());
                 ps.setString(2, e.getKey().name());
-                SectionType sectionType = e.getKey();
-                switch (sectionType) {
-                    case PERSONAL:
-                    case OBJECTIVE:
-                        ps.setString(3, ((SingleTextSection) e.getValue()).getContent());
-                        break;
-                    case ACHIEVEMENT:
-                    case QUALIFICATIONS:
-                        List<String> list = ((ListSection) e.getValue()).getContent();
-                        String[] contentArray = new String[list.size()];
-                        String result = String.join("\n", list.toArray(contentArray));
-                        ps.setString(3, result);
-                        break;
-                }
+                AbstractSection section = e.getValue();
+                ps.setString(3, JsonParser.write(section, AbstractSection.class));
                 ps.addBatch();
             }
             ps.executeBatch();
@@ -223,20 +209,7 @@ public class SqlStorage implements Storage {
         String content = rs.getString("content");
         if (content != null) {
             SectionType sectionType = SectionType.valueOf(rs.getString("type"));
-            switch (sectionType) {
-                case PERSONAL:
-                case OBJECTIVE:
-                    resume.addSection(sectionType, new SingleTextSection(rs.getString("content")));
-                    break;
-                case ACHIEVEMENT:
-                case QUALIFICATIONS:
-                    String result = rs.getString("content");
-                    String[] contentArray = result.split("\n");
-                    List<String> list = Arrays.asList(contentArray);
-                    resume.addSection(sectionType, new ListSection(list));
-                    break;
-            }
+            resume.addSection(sectionType, JsonParser.read(content, AbstractSection.class));
         }
     }
 }
-
