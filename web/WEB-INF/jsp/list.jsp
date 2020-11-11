@@ -14,16 +14,18 @@
 <section>
     <table align="center" style="width:50%">
         <tr>
-            <th>FullName</th>
-            <th>Email</th>
-            <th>Добавить информацию</th>
+            <th>Наименование</th>
+            <th>Электронный адрес</th>
+            <th>Просмотреть резюме</th>
+            <th>Добавить информацию в резюме</th>
             <th>Удалить резюме</th>
         </tr>
         <c:forEach items="${resumes}" var="resume">
             <jsp:useBean id="resume" type="com.urise.webapp.model.Resume"/>
             <tr>
-                <td><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
+                <td>${resume.fullName}</td>
                 <td><%=ContactType.MAIL.toHtml(resume.getContact(ContactType.MAIL))%></td>
+                <td><a href="resume?uuid=${resume.uuid}&action=view">View</a></td>
                 <td><a href="resume?uuid=${resume.uuid}&action=edit">Edit</a></td>
                 <td><a href="resume?uuid=${resume.uuid}&action=delete">Delete</a></td>
             </tr>

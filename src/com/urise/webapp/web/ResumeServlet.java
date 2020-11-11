@@ -1,8 +1,7 @@
 package com.urise.webapp.web;
 
 import com.urise.webapp.Config;
-import com.urise.webapp.model.ContactType;
-import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.*;
 import com.urise.webapp.storage.Storage;
 
 import javax.servlet.ServletConfig;
@@ -34,11 +33,29 @@ public class ResumeServlet extends HttpServlet {
                 resume.getContacts().remove(type);
             }
         }
+        for (SectionType type : SectionType.values()) {
+            String value = request.getParameter(type.name());
+            if (value != null && value.trim().length() != 0) {
+                switch (type) {
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        resume.addSection(type, new SingleTextSection(value));
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        resume.addSection(type, new ListSection(value.split("\\n")));
+                        break;
+                }
+            } else {
+                resume.getSections().remove(type);
+            }
+        }
         storage.update(resume);
         response.sendRedirect("resume");
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws
+            javax.servlet.ServletException, IOException {
         String uuid = request.getParameter("uuid");
         String action = request.getParameter("action");
         if (action == null) {
@@ -53,6 +70,8 @@ public class ResumeServlet extends HttpServlet {
                 response.sendRedirect("resume");
                 return;
             case "view":
+                resume = storage.get(uuid);
+                break;
             case "edit":
                 resume = storage.get(uuid);
                 break;
