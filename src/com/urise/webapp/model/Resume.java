@@ -16,6 +16,16 @@ import java.util.UUID;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Comparable<Resume>, Serializable {
     private static final long serialVersionUID = 1L;
+
+    public static final Resume EMPTY = new Resume();
+
+    static {
+        EMPTY.addSection(SectionType.OBJECTIVE, SingleTextSection.EMPTY);
+        EMPTY.addSection(SectionType.PERSONAL, SingleTextSection.EMPTY);
+        EMPTY.addSection(SectionType.ACHIEVEMENT, ListSection.EMPTY);
+        EMPTY.addSection(SectionType.QUALIFICATIONS, ListSection.EMPTY);
+    }
+
     // Unique identifier
     private String uuid;
     private String fullName;

@@ -32,23 +32,22 @@
                    items="<%=new SectionType[]{SectionType.PERSONAL, SectionType.OBJECTIVE, SectionType.QUALIFICATIONS, SectionType.ACHIEVEMENT}%>">
             <c:set var="section" value="${resume.getSection(type)}"/>
             <jsp:useBean id="section" type="com.urise.webapp.model.AbstractSection"/>
-            <h3 align="left">${type.title}</h3>
+            <h3>${type.title}</h3>
             <c:choose>
                 <c:when test="${type.equals(SectionType.PERSONAL) || type.equals(SectionType.OBJECTIVE)}">
-                    <textarea name="${type.name()}" cols=75 rows=5>
-                        <%=section%>
-                    </textarea>
+                    <textarea style="width:100%; height:80px;" name="${type.name()}"><%=section%></textarea>
                 </c:when>
                 <c:when test="${type.equals(SectionType.QUALIFICATIONS) || type.equals(SectionType.ACHIEVEMENT)}">
-                    <textarea name='${type}' cols=75 rows=5>
-                        <%=String.join("\n", ((ListSection) section).getContent())%>
-                    </textarea>
+                    <textarea style="width:100%; height:80px;"
+                              name='${type}'><%=String.join("\n", ((ListSection) section).getContent())%></textarea>
                 </c:when>
             </c:choose>
         </c:forEach>
         <hr>
-        <button type="submit">Сохранить</button>
-        <button onclick="window.history.back()">Отменить</button>
+        <p align="center">
+            <button type="submit">Сохранить</button>
+            <input action="action" onclick="window.history.go(-1); return false;" type="submit" value="Отменить"/>
+        </p>
     </form>
 </section>
 <jsp:include page="fragments/footer.jsp"/>

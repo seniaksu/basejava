@@ -23,8 +23,13 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
-        Resume resume = storage.get(uuid);
-        resume.setFullName(fullName);
+        Resume resume;
+        if (uuid == null || uuid.length() == 0) {
+            resume = new Resume(fullName);
+        } else {
+            resume = storage.get(uuid);
+            resume.setFullName(fullName);
+        }
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
             if (value != null && value.trim().length() != 0) {
@@ -50,7 +55,11 @@ public class ResumeServlet extends HttpServlet {
                 resume.getSections().remove(type);
             }
         }
-        storage.update(resume);
+        if (uuid == null || uuid.length() == 0) {
+            storage.save(resume);
+        } else {
+            storage.update(resume);
+        }
         response.sendRedirect("resume");
     }
 
@@ -69,11 +78,32 @@ public class ResumeServlet extends HttpServlet {
                 storage.delete(uuid);
                 response.sendRedirect("resume");
                 return;
+            case "save":
+                resume = Resume.EMPTY;
+                break;
             case "view":
                 resume = storage.get(uuid);
                 break;
             case "edit":
                 resume = storage.get(uuid);
+                for (SectionType type : SectionType.values()) {
+                    AbstractSection section = resume.getSection(type);
+                    switch (type) {
+                        case OBJECTIVE:
+                        case PERSONAL:
+                            if (section == null) {
+                                section = SingleTextSection.EMPTY;
+                            }
+                            break;
+                        case ACHIEVEMENT:
+                        case QUALIFICATIONS:
+                            if (section == null) {
+                                section = ListSection.EMPTY;
+                            }
+                            break;
+                    }
+                    resume.addSection(type, section);
+                }
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");

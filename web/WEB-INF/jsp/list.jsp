@@ -31,6 +31,10 @@
             </tr>
         </c:forEach>
     </table>
+    <hr>
+    <p align="center">
+        <input action="action" onclick="location.href='resume?action=save'" type="button" value="Создать новое резюме"/>
+    </p>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>

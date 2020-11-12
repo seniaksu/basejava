@@ -1,6 +1,7 @@
 package com.urise.webapp;
 
 import com.urise.webapp.model.*;
+import java.time.Month;
 
 public class ResumeTestData {
 
@@ -70,10 +71,10 @@ public class ResumeTestData {
                         "Инструменты: Maven + plugin development, Gradle, настройка Ngnix",
                         "администрирование Hudson/Jenkins, Ant + custom task, SoapUI, JPublisher, Flyway, Nagios, " +
                                 "iReport, OpenCmis, Bonita, pgBouncer.",
-                        "Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, " +
+                        "Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектирования, " +
                                 "архитектурных шаблонов, UML, функционального программирования",
                         "Родной русский, английский 'upper intermediate'"));
-        /*resume.addSection(SectionType.EXPERIENCE,
+        resume.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Experience("Java Online Projects", null,
                                 new Experience.Position("Автор проекта.",
@@ -164,7 +165,7 @@ public class ResumeTestData {
                         new Experience("Заочная физико-техническая школа при МФТИ", null,
                                 new Experience.Position(null,
                                         1984, Month.SEPTEMBER, 1987, Month.JUNE,
-                                        "Закончил с отличием"))));*/
+                                        "Закончил с отличием"))));
         return resume;
     }
 }
