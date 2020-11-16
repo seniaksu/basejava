@@ -20,6 +20,7 @@ public class Experience implements Serializable {
     private static final long serialVersionUID = 1L;
     private Link homepage;
     private List<Position> positions;
+    public static final Experience EMPTY = new Experience("", "", Position.EMPTY);
 
     public Experience() {
     }
@@ -71,6 +72,8 @@ public class Experience implements Serializable {
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private YearMonth endDate;
         private String description;
+
+        public static final Position EMPTY = new Position();
 
         public Position() {
         }

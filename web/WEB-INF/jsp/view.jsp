@@ -1,5 +1,7 @@
 <%@ page import="com.urise.webapp.model.ListSection" %>
+<%@ page import="com.urise.webapp.model.OrganizationSection" %>
 <%@ page import="com.urise.webapp.model.SingleTextSection" %>
+<%@ page import="com.urise.webapp.util.DateUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -29,28 +31,20 @@
             <c:set var="section" value="${sectionEntry.value}"/>
             <jsp:useBean id="section" type="com.urise.webapp.model.AbstractSection"/>
             <tr>
-                <td><h2><a name="type.name">${type.title}</a></h2></td>
+                <td colspan="2"><h2><a name="type.name">${type.title}</a></h2></td>
             </tr>
             <c:choose>
-                <c:when test="${type=='PERSONAL'}">
+                <c:when test="${type=='PERSONAL' || type=='OBJECTIVE'}">
                     <tr>
-                        <td>
+                        <td colspan="2">
                             <p align="left"><%=((SingleTextSection) section).getContent()%>
                             </p>
                         </td>
                     </tr>
                 </c:when>
-                <c:when test="${type=='OBJECTIVE'}">
+                <c:when test="${type=='QUALIFICATIONS' || type=='ACHIEVEMENT'}">
                     <tr>
-                        <td>
-                            <p align="left"><%=((SingleTextSection) section).getContent()%>
-                            </p>
-                        </td>
-                    </tr>
-                </c:when>
-                <c:when test="${type=='ACHIEVEMENT' || type=='QUALIFICATIONS'}">
-                    <tr>
-                        <td>
+                        <td colspan="2">
                             <ul>
                                 <c:forEach var="item" items="<%=((ListSection) section).getContent()%>">
                                     <li><p align="left">${item}</p></li>
@@ -58,6 +52,32 @@
                             </ul>
                         </td>
                     </tr>
+                </c:when>
+                <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
+                    <c:forEach var="org" items="<%=((OrganizationSection) section).getOrganizations()%>">
+                        <tr>
+                            <td colspan="2">
+                                <c:choose>
+                                    <c:when test="${empty org.homepage.url}">
+                                        <h3>${org.homepage.name}</h3>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <h3><a href="${org.homepage.url}">${org.homepage.name}</a></h3>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                        </tr>
+                        <c:forEach var="position" items="${org.positions}">
+                            <jsp:useBean id="position" type="com.urise.webapp.model.Experience.Position"/>
+                            <tr>
+                                <td width="15%"
+                                    style="vertical-align: top">
+                                    <%=DateUtil.format(position.getStartDate()) + " - " + DateUtil.format(position.getEndDate())%>
+                                </td>
+                                <td><b>${position.title}</b><br>${position.description}</td>
+                            </tr>
+                        </c:forEach>
+                    </c:forEach>
                 </c:when>
             </c:choose>
         </c:forEach>

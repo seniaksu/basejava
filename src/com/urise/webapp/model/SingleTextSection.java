@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class SingleTextSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
-    public static final SingleTextSection EMPTY = new SingleTextSection("");
     private String content;
+    public static final SingleTextSection EMPTY = new SingleTextSection("");
 
     public SingleTextSection() {
     }

@@ -132,7 +132,7 @@ public class SqlStorage implements Storage {
                             "WHERE uuid = ? ")) {
                 ps.setString(1, resume.getFullName());
                 ps.setString(2, resume.getUuid());
-                if (ps.executeUpdate() == 0) {
+                if (ps.executeUpdate() != 1) {
                     throw new NotExistStorageException(resume.getUuid());
                 }
             }
@@ -199,8 +199,8 @@ public class SqlStorage implements Storage {
 
     private void addContact(ResultSet rs, Resume resume) throws SQLException {
         String value = rs.getString("value");
-        ContactType contactType = ContactType.valueOf(rs.getString("type"));
         if (value != null) {
+            ContactType contactType = ContactType.valueOf(rs.getString("type"));
             resume.addContact(contactType, value);
         }
     }
